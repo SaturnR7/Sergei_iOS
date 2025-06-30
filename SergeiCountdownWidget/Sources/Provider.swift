@@ -34,7 +34,7 @@ struct Provider: TimelineProvider {
             let currentDate = Date()
 
             do {
-                let launches = try await launchesRepository.fetchLaunches()
+                let launches = try await launchesRepository.getLaunchesUpcoming()
                 // 次の5時間分のエントリを作成
                 for hourOffset in 0 ..< 5 {
                     let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!

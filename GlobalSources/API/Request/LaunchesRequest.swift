@@ -18,8 +18,4 @@ struct LaunchesRequest: SergeiRequestType {
     var path: String {
         return "launches"
     }
-    
-    var parameters: Any? {
-        return nil
-    }
 } 

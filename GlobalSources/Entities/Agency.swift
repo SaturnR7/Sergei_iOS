@@ -12,7 +12,7 @@ struct Agency: Codable {
     let id: Int?
     let url: String?
     let name: String?
-    let type: String?
+    let type: AgencyType?
     let countryCode: String?
     let abbrev: String?
     let description: String?
@@ -46,4 +46,10 @@ struct Agency: Codable {
         case countryCode = "country_code"
         case launchLibraryURL = "launch_library_url"
     }
+}
+
+// MARK: - Agency Type
+struct AgencyType: Codable {
+    let id: Int?
+    let name: String?
 }
