@@ -19,19 +19,22 @@ struct Provider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        WidgetAPIClient.shared.fetchLaunches { result in
+        Task {
             var entries: [SimpleEntry] = []
             let currentDate = Date()
 
-            switch result {
-            case .success(let launches):
+            do {
+                let request = LaunchesRequest()
+                let launches = try await APIClient.shared.response(request)
+
                 // 次の5時間分のエントリを作成
                 for hourOffset in 0 ..< 5 {
                     let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
                     let entry = SimpleEntry(date: entryDate, launches: launches)
                     entries.append(entry)
                 }
-            case .failure(_):
+            } catch {
+                print("❌ API Error: \(error)")
                 // エラーの場合は空のデータでエントリを作成
                 for hourOffset in 0 ..< 5 {
                     let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!

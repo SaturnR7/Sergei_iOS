@@ -50,9 +50,10 @@ extension SergeiRequestType where Response: Decodable {
             guard let data = object as? Data else {
                 throw ResponseError.unexpectedObject(object)
             }
+            AppLogger.info("レスポンス：\(data)")
             return try SergeiAPI.jsonDecoder.decode(Response.self, from: data)
         } catch {
-            AppLogger.error("レスポンスエラー: \(error)")
+            AppLogger.error("レスポンスエラー：\(error)")
             throw ResponseError.unexpectedObject(object)
         }
     }
