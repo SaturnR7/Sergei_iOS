@@ -1,6 +1,6 @@
 //
-//  SergeiCountdownWidget.swift
-//  SergeiCountdownWidget
+//  CountdownWidget.swift
+//  CountdownWidget
 //
 //  Created by Hidemasa Kobayashi on 2025/06/21.
 //
@@ -8,69 +8,13 @@
 import WidgetKit
 import SwiftUI
 
-struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), launches: nil)
-    }
-
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), launches: nil)
-        completion(entry)
-    }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        Task {
-            var entries: [SimpleEntry] = []
-            let currentDate = Date()
-
-            do {
-                let request = LaunchesRequest()
-                let launches = try await APIClient.shared.response(request)
-
-                // 次の5時間分のエントリを作成
-                for hourOffset in 0 ..< 5 {
-                    let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-                    let entry = SimpleEntry(date: entryDate, launches: launches)
-                    entries.append(entry)
-                }
-            } catch {
-                print("❌ API Error: \(error)")
-                // エラーの場合は空のデータでエントリを作成
-                for hourOffset in 0 ..< 5 {
-                    let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-                    let entry = SimpleEntry(date: entryDate, launches: nil)
-                    entries.append(entry)
-                }
-            }
-
-            let timeline = Timeline(entries: entries, policy: .atEnd)
-            completion(timeline)
-        }
-    }
-
-//    func relevances() async -> WidgetRelevances<Void> {
-//        // Generate a list containing the contexts this widget is relevant in.
-//    }
-}
-
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let launches: Launches?
-}
-
-struct SergeiCountdownWidget: Widget {
+struct CountdownWidget: Widget {
     let kind: String = "CountdownWidget"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            if #available(iOS 17.0, *) {
-                CountdownWidgetEntryView(entry: entry)
-                    .containerBackground(.fill.tertiary, for: .widget)
-            } else {
-                CountdownWidgetEntryView(entry: entry)
-                    .padding()
-                    .background()
-            }
+            CountdownWidgetEntryView(entry: entry)
+                .containerBackground(.fill.tertiary, for: .widget)
         }
         .configurationDisplayName("My Widget")
         .description("This is an example widget.")
@@ -101,7 +45,7 @@ struct CountdownWidgetEntryView : View {
 
 // MARK: - Small
 struct CountdownSmall: View {
-    var entry: SimpleEntry
+    var entry: LaunchTimelineEntry
 
     var body: some View {
         VStack {
@@ -138,7 +82,7 @@ struct CountdownSmall: View {
 
 // MARK: - Medium
 struct CountdownMedium: View {
-    var entry: SimpleEntry
+    var entry: LaunchTimelineEntry
 
     var body: some View {
         ZStack {
@@ -179,7 +123,7 @@ struct CountdownMedium: View {
 
 // MARK: - Large
 struct CountdownLarge: View {
-    var entry: SimpleEntry
+    var entry: LaunchTimelineEntry
 
     var body: some View {
         HStack {
@@ -239,23 +183,23 @@ struct CountdownLargeReady: View {
 // MARK: - Preview
 @available(iOS 17.0, *)
 #Preview(as: .systemSmall) {
-    SergeiCountdownWidget()
+    CountdownWidget()
 } timeline: {
-    SimpleEntry(date: .now, launches: nil)
-    SimpleEntry(date: .now, launches: nil)
+    LaunchTimelineEntry(date: .now, launches: nil)
+    LaunchTimelineEntry(date: .now, launches: nil)
 }
 
 
 @available(iOS 17.0, *)
 #Preview(as: .systemMedium) {
-    SergeiCountdownWidget()
+    CountdownWidget()
 } timeline: {
-    SimpleEntry(date: .now, launches: nil)
+    LaunchTimelineEntry(date: .now, launches: nil)
 }
 
 @available(iOS 17.0, *)
 #Preview(as: .systemLarge) {
-    SergeiCountdownWidget()
+    CountdownWidget()
 } timeline: {
-    SimpleEntry(date: .now, launches: nil)
+    LaunchTimelineEntry(date: .now, launches: nil)
 }
