@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B6099E402E12567100819561 /* APIKit in Frameworks */ = {isa = PBXBuildFile; productRef = B6099E3F2E12567100819561 /* APIKit */; };
+		B6099E422E12568700819561 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = B6099E412E12568700819561 /* Logging */; };
 		B6A4FB2E2E065CB100F1AB38 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = B6A4FB2D2E065CB100F1AB38 /* ComposableArchitecture */; };
 		B6A4FB312E065CD900F1AB38 /* APIKit in Frameworks */ = {isa = PBXBuildFile; productRef = B6A4FB302E065CD900F1AB38 /* APIKit */; };
 		B6A4FB392E065D0400F1AB38 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A4FB382E065D0400F1AB38 /* WidgetKit.framework */; };
@@ -96,6 +98,8 @@
 			files = (
 				B6A4FB3B2E065D0400F1AB38 /* SwiftUI.framework in Frameworks */,
 				B6A4FB392E065D0400F1AB38 /* WidgetKit.framework in Frameworks */,
+				B6099E422E12568700819561 /* Logging in Frameworks */,
+				B6099E402E12567100819561 /* APIKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,9 +181,12 @@
 			);
 			fileSystemSynchronizedGroups = (
 				B6A4FB3C2E065D0400F1AB38 /* SergeiCountdownWidget */,
+				B6D054932E0E7E0A00C2F20B /* GlobalSources */,
 			);
 			name = SergeiCountdownWidgetExtension;
 			packageProductDependencies = (
+				B6099E3F2E12567100819561 /* APIKit */,
+				B6099E412E12568700819561 /* Logging */,
 			);
 			productName = SergeiCountdownWidgetExtension;
 			productReference = B6A4FB362E065D0400F1AB38 /* SergeiCountdownWidgetExtension.appex */;
@@ -585,6 +592,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B6099E3F2E12567100819561 /* APIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6A4FB2F2E065CD900F1AB38 /* XCRemoteSwiftPackageReference "APIKit" */;
+			productName = APIKit;
+		};
+		B6099E412E12568700819561 /* Logging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6A4FB5D2E065E9900F1AB38 /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
+		};
 		B6A4FB2D2E065CB100F1AB38 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B6A4FB2C2E065CB100F1AB38 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;

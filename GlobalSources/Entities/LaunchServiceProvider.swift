@@ -9,9 +9,9 @@ import Foundation
 
 // MARK: - Launch Service Provider
 struct LaunchServiceProvider: Codable {
-    let id: Int
-    let url: String
-    let name: String
+    let id: Int?
+    let url: String?
+    let name: String?
     let type: String?
     let countryCode: String?
     let abbrev: String?
@@ -35,7 +35,7 @@ struct LaunchServiceProvider: Codable {
     let logoURL: String?
     let imageURL: String?
     let nationURL: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case id, url, name, type, abbrev, description, administrator
         case foundingYear, launchers, spacecraft, totalLaunchCount
@@ -46,4 +46,4 @@ struct LaunchServiceProvider: Codable {
         case countryCode = "country_code"
         case launchLibraryURL = "launch_library_url"
     }
-} 
+}

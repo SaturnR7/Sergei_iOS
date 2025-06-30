@@ -9,16 +9,16 @@ import Foundation
 
 // MARK: - Rocket
 struct Rocket: Codable {
-    let id: Int
+    let id: Int?
     let configuration: RocketConfiguration?
 }
 
 // MARK: - Rocket Configuration
 struct RocketConfiguration: Codable {
-    let id: Int
+    let id: Int?
     let launchLibraryID: Int?
-    let url: String
-    let name: String
+    let url: String?
+    let name: String?
     let family: String?
     let fullName: String?
     let variant: String?
@@ -48,7 +48,7 @@ struct RocketConfiguration: Codable {
     let logoURL: String?
     let imageURL: String?
     let program: [Program]?
-    
+
     enum CodingKeys: String, CodingKey {
         case id, url, name, family, variant, alias, length, diameter
         case maidenFlight, launchMass, leoCapacity, gtoCapacity, toThrust
@@ -62,4 +62,4 @@ struct RocketConfiguration: Codable {
         case maxStage = "max_stage"
         case consecutiveSuccessfulLandings = "consecutive_successful_landings"
     }
-} 
+}

@@ -52,7 +52,7 @@ extension SergeiRequestType where Response: Decodable {
             }
             return try SergeiAPI.jsonDecoder.decode(Response.self, from: data)
         } catch {
-            AppLogger.error("レスポンスエラー")
+            AppLogger.error("レスポンスエラー: \(error)")
             throw ResponseError.unexpectedObject(object)
         }
     }

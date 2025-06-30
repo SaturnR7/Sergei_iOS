@@ -9,8 +9,8 @@ import Foundation
 
 // MARK: - Launch Status
 struct LaunchStatus: Codable {
-    let id: Int
-    let name: String
-    let abbrev: String
-    let description: String
-} 
+    let id: Int?
+    let name: String?
+    let abbrev: String?
+    let description: String?
+}

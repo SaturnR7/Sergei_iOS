@@ -9,9 +9,9 @@ import Foundation
 
 // MARK: - Program
 struct Program: Codable {
-    let id: Int
-    let url: String
-    let name: String
+    let id: Int?
+    let url: String?
+    let name: String?
     let description: String?
     let agencies: [Agency]?
     let imageURL: String?
@@ -20,9 +20,9 @@ struct Program: Codable {
     let infoURL: String?
     let wikiURL: String?
     let missionPatches: [String]?
-    
+
     enum CodingKeys: String, CodingKey {
         case id, url, name, description, agencies, imageURL, startDate, endDate
         case infoURL, wikiURL, missionPatches
     }
-} 
+}

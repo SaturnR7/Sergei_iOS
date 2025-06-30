@@ -18,17 +18,19 @@ struct Launches: Codable {
 // MARK: - Launch
 struct Launch: Codable, Identifiable {
     let id: String
-    let url: String
+    let url: String?
     let launchLibraryID: Int?
-    let slug: String
+    let slug: String?
     let name: String
-    let status: LaunchStatus
-    let net: String
-    let windowEnd: String
-    let windowStart: String
-    let inhold: Bool
-    let tbdtime: Bool
-    let tbddate: Bool
+    let responseMode: String?
+    let launchDesignator: String?
+    let status: LaunchStatus?
+    let net: String?
+    let windowEnd: String?
+    let windowStart: String?
+    let inhold: Bool?
+    let tbdtime: Bool?
+    let tbddate: Bool?
     let probability: Int?
     let holdreason: String?
     let failreason: String?
@@ -37,10 +39,10 @@ struct Launch: Codable, Identifiable {
     let rocket: Rocket?
     let mission: Mission?
     let pad: Pad?
-    let webcastLive: Bool
-    let image: String?
+    let webcastLive: Bool?
+    let image: LaunchImage?
     let infographic: String?
-    let program: [Program]
+    let program: [Program]?
     let orbitalLaunchAttemptCount: Int?
     let locationLaunchAttemptCount: Int?
     let padLaunchAttemptCount: Int?
@@ -49,7 +51,7 @@ struct Launch: Codable, Identifiable {
     let locationLaunchAttemptCountYear: Int?
     let padLaunchAttemptCountYear: Int?
     let agencyLaunchAttemptCountYear: Int?
-    
+
     enum CodingKeys: String, CodingKey {
         case id, url, slug, name, status, net, windowEnd, windowStart
         case inhold, tbdtime, tbddate, probability, holdreason, failreason
@@ -60,5 +62,21 @@ struct Launch: Codable, Identifiable {
         case orbitalLaunchAttemptCountYear, locationLaunchAttemptCountYear
         case padLaunchAttemptCountYear, agencyLaunchAttemptCountYear
         case launchLibraryID = "launch_library_id"
+        case responseMode = "response_mode"
+        case launchDesignator = "launch_designator"
+    }
+}
+
+// MARK: - Launch Image
+struct LaunchImage: Codable {
+    let id: Int?
+    let name: String?
+    let imageURL: String?
+    let thumbnailURL: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, name
+        case imageURL = "image_url"
+        case thumbnailURL = "thumbnail_url"
     }
 }

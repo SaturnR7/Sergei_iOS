@@ -10,37 +10,39 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), emoji: "😀")
+        SimpleEntry(date: Date(), launches: nil)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry: SimpleEntry
-        switch context.family {
-        case .systemSmall:
-            entry = SimpleEntry(date: Date(), emoji: "スモール")
-        case .systemMedium:
-            entry = SimpleEntry(date: Date(), emoji: "ミディアム")
-        case .systemLarge:
-            entry = SimpleEntry(date: Date(), emoji: "ラージ")
-        default:
-            entry = SimpleEntry(date: Date(), emoji: "😀")
-        }
+        let entry = SimpleEntry(date: Date(), launches: nil)
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
+        WidgetAPIClient.shared.fetchLaunches { result in
+            var entries: [SimpleEntry] = []
+            let currentDate = Date()
 
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, emoji: "😀")
-            entries.append(entry)
+            switch result {
+            case .success(let launches):
+                // 次の5時間分のエントリを作成
+                for hourOffset in 0 ..< 5 {
+                    let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
+                    let entry = SimpleEntry(date: entryDate, launches: launches)
+                    entries.append(entry)
+                }
+            case .failure(_):
+                // エラーの場合は空のデータでエントリを作成
+                for hourOffset in 0 ..< 5 {
+                    let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
+                    let entry = SimpleEntry(date: entryDate, launches: nil)
+                    entries.append(entry)
+                }
+            }
+
+            let timeline = Timeline(entries: entries, policy: .atEnd)
+            completion(timeline)
         }
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
     }
 
 //    func relevances() async -> WidgetRelevances<Void> {
@@ -50,7 +52,7 @@ struct Provider: TimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let emoji: String
+    let launches: Launches?
 }
 
 struct SergeiCountdownWidget: Widget {
@@ -83,11 +85,11 @@ struct CountdownWidgetEntryView : View {
     var body: some View {
         switch family {
         case .systemSmall:
-            CountdownSmall()
+            CountdownSmall(entry: entry)
         case .systemMedium:
-            CountdownMedium()
+            CountdownMedium(entry: entry)
         case .systemLarge:
-            CountdownLarge()
+            CountdownLarge(entry: entry)
         default:
             Text("not supported")
         }
@@ -96,6 +98,8 @@ struct CountdownWidgetEntryView : View {
 
 // MARK: - Small
 struct CountdownSmall: View {
+    var entry: SimpleEntry
+
     var body: some View {
         VStack {
             Spacer()
@@ -105,12 +109,21 @@ struct CountdownSmall: View {
                         Rectangle()
                             .frame(width: 4, height: 46)
                         VStack(alignment: .leading) {
-                            Text("Starship")
-                                .font(.system(size: 10))
-                            Text("2024-02-06 13:21")
-                                .font(.system(size: 10))
-                            Text("T-000:00:00")
-                                .font(.system(size: 16))
+                            if let launches = entry.launches, let firstLaunch = launches.results.first {
+                                Text(firstLaunch.name ?? "Unknown")
+                                    .font(.system(size: 10))
+                                Text(firstLaunch.net ?? "TBD")
+                                    .font(.system(size: 10))
+                                Text("T-000:00:00")
+                                    .font(.system(size: 16))
+                            } else {
+                                Text("Loading...")
+                                    .font(.system(size: 10))
+                                Text("--")
+                                    .font(.system(size: 10))
+                                Text("T-000:00:00")
+                                    .font(.system(size: 16))
+                            }
                         }
                     }
                 }
@@ -122,10 +135,12 @@ struct CountdownSmall: View {
 
 // MARK: - Medium
 struct CountdownMedium: View {
+    var entry: SimpleEntry
+
     var body: some View {
         ZStack {
-            Image("img_widget_starship_1")
-                .aspectRatio(contentMode: .fill)
+//            Image("img_widget_starship")
+//                .aspectRatio(contentMode: .fill)
             VStack {
                 Spacer()
                 HStack {
@@ -134,12 +149,21 @@ struct CountdownMedium: View {
                             Rectangle()
                                 .frame(width: 4, height: 46)
                             VStack(alignment: .leading) {
-                                Text("Starship")
-                                    .font(.system(size: 10))
-                                Text("2024-02-06 13:21")
-                                    .font(.system(size: 10))
-                                Text("T-000:00:00")
-                                    .font(.system(size: 16))
+                                if let launches = entry.launches, let firstLaunch = launches.results.first {
+                                    Text(firstLaunch.name ?? "Unknown")
+                                        .font(.system(size: 10))
+                                    Text(firstLaunch.net ?? "TBD")
+                                        .font(.system(size: 10))
+                                    Text("T-000:00:00")
+                                        .font(.system(size: 16))
+                                } else {
+                                    Text("Loading...")
+                                        .font(.system(size: 10))
+                                    Text("--")
+                                        .font(.system(size: 10))
+                                    Text("T-000:00:00")
+                                        .font(.system(size: 16))
+                                }
                             }
                         }
                     }
@@ -152,6 +176,8 @@ struct CountdownMedium: View {
 
 // MARK: - Large
 struct CountdownLarge: View {
+    var entry: SimpleEntry
+
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 14) {
@@ -159,14 +185,27 @@ struct CountdownLarge: View {
                     Rectangle()
                         .frame(width: 4, height: 80)
                     VStack(alignment: .leading) {
-                        Text("Starship")
-                        Text("2024-02-06 13:21")
-                        Text("T-000:00:00")
-                            .font(.system(size: 26))
+                        if let launches = entry.launches, let firstLaunch = launches.results.first {
+                            Text(firstLaunch.name ?? "Unknown")
+                            Text(firstLaunch.net ?? "TBD")
+                            Text("T-000:00:00")
+                                .font(.system(size: 26))
+                        } else {
+                            Text("Loading...")
+                            Text("--")
+                            Text("T-000:00:00")
+                                .font(.system(size: 26))
+                        }
                     }
                 }
-                ForEach(0..<4) { _ in
-                    CountdownLargeReady()
+                if let launches = entry.launches {
+                    ForEach(Array(launches.results.prefix(4).enumerated()), id: \.offset) { index, launch in
+                        CountdownLargeReady(launch: launch)
+                    }
+                } else {
+                    ForEach(0..<4) { _ in
+                        CountdownLargeReady(launch: nil)
+                    }
                 }
             }
             Spacer()
@@ -175,13 +214,20 @@ struct CountdownLarge: View {
 }
 
 struct CountdownLargeReady: View {
+    var launch: Launch?
+
     var body: some View {
         HStack {
             Rectangle()
                 .frame(width: 4, height: 40)
             VStack(alignment: .leading) {
-                Text("Starship")
-                Text("2024-02-06 13:21")
+                if let launch = launch {
+                    Text(launch.name ?? "Unknown")
+                    Text(launch.net ?? "TBD")
+                } else {
+                    Text("Loading...")
+                    Text("--")
+                }
             }
         }
     }
@@ -192,8 +238,8 @@ struct CountdownLargeReady: View {
 #Preview(as: .systemSmall) {
     SergeiCountdownWidget()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
-    SimpleEntry(date: .now, emoji: "🤩")
+    SimpleEntry(date: .now, launches: nil)
+    SimpleEntry(date: .now, launches: nil)
 }
 
 
@@ -201,12 +247,12 @@ struct CountdownLargeReady: View {
 #Preview(as: .systemMedium) {
     SergeiCountdownWidget()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
+    SimpleEntry(date: .now, launches: nil)
 }
 
 @available(iOS 17.0, *)
 #Preview(as: .systemLarge) {
     SergeiCountdownWidget()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
+    SimpleEntry(date: .now, launches: nil)
 }

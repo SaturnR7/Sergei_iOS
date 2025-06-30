@@ -9,9 +9,9 @@ import Foundation
 
 // MARK: - Agency
 struct Agency: Codable {
-    let id: Int
-    let url: String
-    let name: String
+    let id: Int?
+    let url: String?
+    let name: String?
     let type: String?
     let countryCode: String?
     let abbrev: String?
@@ -35,7 +35,7 @@ struct Agency: Codable {
     let logoURL: String?
     let imageURL: String?
     let nationURL: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case id, url, name, type, abbrev, description, administrator
         case foundingYear, launchers, spacecraft, totalLaunchCount
@@ -46,4 +46,4 @@ struct Agency: Codable {
         case countryCode = "country_code"
         case launchLibraryURL = "launch_library_url"
     }
-} 
+}
