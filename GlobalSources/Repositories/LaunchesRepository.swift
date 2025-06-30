@@ -27,7 +27,7 @@ final class LaunchesRepository: LaunchesRepositoryProtocol {
         return try await apiClient.response(request)
     }
 
-    // MARK: - Launches
+    // MARK: - LaunchesUpcoming
     func getLaunchesUpcoming() async throws -> Launches {
         let request = LaunchesUpcomingRequest()
         return try await apiClient.response(request)
