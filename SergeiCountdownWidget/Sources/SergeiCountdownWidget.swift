@@ -124,8 +124,8 @@ struct CountdownSmall: View {
 struct CountdownMedium: View {
     var body: some View {
         ZStack {
-//            Image("img_widget_starship_1")
-//                .aspectRatio(contentMode: .fill)
+            Image("img_widget_starship_1")
+                .aspectRatio(contentMode: .fill)
             VStack {
                 Spacer()
                 HStack {

@@ -58,11 +58,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		B68175B62E0660240090305E /* Utilities */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Utilities;
-			sourceTree = "<group>";
-		};
 		B6A4FB202E065B9500F1AB38 /* Sergei */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Sergei;
@@ -76,9 +71,9 @@
 			path = SergeiCountdownWidget;
 			sourceTree = "<group>";
 		};
-		B6A4FB4F2E065DA100F1AB38 /* API */ = {
+		B6D054932E0E7E0A00C2F20B /* GlobalSources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = API;
+			path = GlobalSources;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -110,8 +105,7 @@
 		B6A4FB152E065B9400F1AB38 = {
 			isa = PBXGroup;
 			children = (
-				B68175B62E0660240090305E /* Utilities */,
-				B6A4FB4F2E065DA100F1AB38 /* API */,
+				B6D054932E0E7E0A00C2F20B /* GlobalSources */,
 				B6A4FB202E065B9500F1AB38 /* Sergei */,
 				B6A4FB3C2E065D0400F1AB38 /* SergeiCountdownWidget */,
 				B6A4FB372E065D0400F1AB38 /* Frameworks */,
@@ -155,9 +149,8 @@
 				B6A4FB452E065D0600F1AB38 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				B68175B62E0660240090305E /* Utilities */,
 				B6A4FB202E065B9500F1AB38 /* Sergei */,
-				B6A4FB4F2E065DA100F1AB38 /* API */,
+				B6D054932E0E7E0A00C2F20B /* GlobalSources */,
 			);
 			name = Sergei;
 			packageProductDependencies = (
