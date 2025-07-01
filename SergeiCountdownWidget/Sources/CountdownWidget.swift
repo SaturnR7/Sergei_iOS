@@ -85,37 +85,42 @@ struct CountdownMedium: View {
     var entry: LaunchTimelineEntry
 
     var body: some View {
-        ZStack {
-//            Image("img_widget_starship")
-//                .aspectRatio(contentMode: .fill)
+        ZStack() {
+            Image("img_widget_starship")
+                .resizable()
+                .scaledToFill()
             VStack {
                 Spacer()
                 HStack {
-                    VStack(alignment: .leading, spacing: 14) {
-                        HStack {
-                            Rectangle()
-                                .frame(width: 4, height: 46)
-                            VStack(alignment: .leading) {
-                                if let launches = entry.launches, let firstLaunch = launches.results.first {
-                                    Text(firstLaunch.name ?? "Unknown")
-                                        .font(.system(size: 10))
-                                    Text(firstLaunch.net ?? "TBD")
-                                        .font(.system(size: 10))
-                                    Text("T-000:00:00")
-                                        .font(.system(size: 16))
-                                } else {
-                                    Text("Loading...")
-                                        .font(.system(size: 10))
-                                    Text("--")
-                                        .font(.system(size: 10))
-                                    Text("T-000:00:00")
-                                        .font(.system(size: 16))
-                                }
-                            }
+                    Rectangle()
+                        .frame(width: 4, height: 46)
+                        .foregroundStyle(.green)
+                    VStack(alignment: .leading) {
+                        if let launches = entry.launches, let firstLaunch = launches.results.first {
+                            Text(firstLaunch.name)
+                                .font(.system(size: 10))
+                                .foregroundStyle(.white)
+                            Text(firstLaunch.net ?? "TBD")
+                                .font(.system(size: 10))
+                                .foregroundStyle(.white)
+                            Text("T-000:00:00")
+                                .font(.system(size: 16))
+                                .foregroundStyle(.white)
+                        } else {
+                            Text("Loading...")
+                                .font(.system(size: 10))
+                                .foregroundStyle(.white)
+                            Text("--")
+                                .font(.system(size: 10))
+                                .foregroundStyle(.white)
+                            Text("T-000:00:00")
+                                .font(.system(size: 16))
+                                .foregroundStyle(.white)
                         }
                     }
                     Spacer()
                 }
+                Spacer().frame(height: 24)
             }
         }
     }
