@@ -56,8 +56,9 @@ struct CountdownSmall: View {
                         Rectangle()
                             .frame(width: 4, height: 46)
                         VStack(alignment: .leading) {
-                            if let launches = entry.launches, let firstLaunch = launches.results.first {
-                                Text(firstLaunch.name ?? "Unknown")
+                            if let launches = entry.launches,
+                               let firstLaunch = launches.results.first {
+                                Text(firstLaunch.name)
                                     .font(.system(size: 10))
                                 Text(firstLaunch.net ?? "TBD")
                                     .font(.system(size: 10))
